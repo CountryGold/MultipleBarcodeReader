@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+
+    <!-- compiled css output -->
+    <link href="css/ionic.app.css" rel="stylesheet">
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="js/ng-cordova.min.js"></script>
+	<script src="cordova.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/angular-local-storage.min.js"></script>
+  
+  </head>
+
+  <body ng-app="MyApp" id="span" ng-controller="MyCtrl">
+	 <div>
+        <script type="text/javascript">
+			var code = [];
+			
+			//localStorageService.set('codes', code);
+            // On Windows, the alert function doesn't exist, so we add it.
+            window.alert = window.alert !== undefined ? window.alert : function (message) {
+                var alertBox = new Windows.UI.Popups.MessageDialog(message);
+                alertBox.showAsync();
+            };
+            var picker;
+            function success(session) {
+               
+					code.push(session.newlyRecognizedCodes[0].data);
+					angular.element(document.getElementById('span')).scope().add_code(session.newlyRecognizedCodes[0].data);   
+					//add_code(session.newlyRecognizedCodes[0].data);
+					//localStorageService.set('codes', code);
+					
+            }
+            function failure(error) {
+                //alert("Failed: " + error);
+            }
+            function scan() {
+                Scandit.License.setAppKey("SwdCxLebn9MFEXvfULR4QksV+J1fo77pIPCD8niFxnM");
+                var settings = new Scandit.ScanSettings();
+                settings.setSymbologyEnabled(Scandit.Barcode.Symbology.EAN13, true);
+                settings.setSymbologyEnabled(Scandit.Barcode.Symbology.UPC12, true);
+                settings.setSymbologyEnabled(Scandit.Barcode.Symbology.EAN8, true);
+				settings.setSymbologyEnabled(Scandit.Barcode.Symbology.CODE39, true);
+                settings.codeDuplicateFilter = -1;
+                picker = new Scandit.BarcodePicker(settings);
+                picker.continuousMode = true;
+                picker.getOverlayView().setViewfinderDimension(0.9, 0.2, 0.6, 0.2);
+                picker.setMargins(new Scandit.Margins(0, 0, 0, 200), null, 0);
+                picker.show(success, null, failure);
+                picker.startScanning();
+				document.getElementById('b1').style.display= 'none';
+				document.getElementById('b2').style.display= 'none';
+            }
+            function stop() {
+                picker.cancel();
+				document.getElementById('b1').style.display= 'block';
+				document.getElementById('b2').style.display= 'block';
+            }
+            function start() {
+                picker.startScanning();
+                picker.setMargins(new Scandit.Margins(0, 0, 0, 200), null, 0.5);
+                picker.getOverlayView().setViewfinderDimension(0.9, 0.2, 0.6, 0.2);
+				document.getElementById('b1').style.display= 'none';
+				document.getElementById('b2').style.display= 'none';
+            }
+            function cancel() {
+                picker.cancel();
+				angular.element(document.getElementById('span')).scope().reset_all(); 
+				document.getElementById('b1').style.display= 'block';
+				document.getElementById('b2').style.display= 'block';
+            }
+			
+			function hideit() {
+                picker.cancel();
+				
+            }
+			
+			/* setTimeout(function() {
+			   angular.element(document.getElementById('span')).scope().add_code('test');    
+			}, 1000); */
+			
+        </script>
+        <div>
+		<span  style="position: absolute; 
+                    bottom: 120px;" id="cc">
+			<input type="hidden" name="picker" id="pkk">
+		</div>
+		
+			<div class="list" style="position: absolute; 
+                    bottom: 170px;width:100%;display:none;" id="list">
+					<center><img src="img/icon.png" style="width:50%;margin-bottom:50px;"></center>
+			  <label class="item item-input">
+				<input type="text" placeholder="Enter 10 Digit Mobile number" id="box1" maxlength="10">
+				<input type="text" placeholder="Enter 4 Digit OTP" style="display:none;" id="box2">
+			  </label>
+			  
+			 
+				<a class="button button-assertive button-full" ng-click="send_otp()" id="bt1">Get OTP</a>
+				<a class="button button-calm button-full" ng-click="verify_otp()" style="display:none;" id="bt2">Verify OTP</a>
+			<input type="hidden" id="rndotp">
+			  
+			</div>
+		
+            <input type="button" value="scan" onclick="scan()" style="position: absolute; 
+                    bottom: 92px; left: 15%; width: 30%; height: 30px; font-size: 1em" id="bb1"/>
+            <input type="button" value="Reset" onclick="cancel()" style="position: absolute;
+                    bottom: 92px; right: 15%; width: 30%; height: 30px; font-size: 1em" id="bb2"/>
+            <input type="button" value="stop" onclick="stop()" style="position: absolute; 
+                    bottom: 50px; left: 15%; width: 30%; height: 30px; font-size: 1em" id="bb3"/>
+            <input type="button" value="restart" onclick="start()" style="position: absolute; 
+                    bottom: 50px; right: 15%; width: 30%; height: 30px; font-size: 1em" id="bb4"/>
+			<input type="button" value="Show" ng-click="showLocationsModal()" style="position: absolute; 
+                    bottom: 10px; left: 15%; width: 30%; height: 30px; font-size: 1em" id="b1" onclick="hideit()"/>
+			<input type="button" value="Offers" ng-click="showLocationsModal2()" style="position: absolute; 
+                    bottom: 10px; right: 15%; width: 30%; height: 30px; font-size: 1em" id="b2"/>
+					
+			<input type="hidden" value="Offers" ng-click="showLocationsModal2()" style="position: absolute; 
+                    bottom: 10px; right: 15%; width: 30%; height: 30px; font-size: 1em" id="hib"/>		
+				
+        </div>
+		<script>
+		function save() {
+				document.getElementById('cc').innerHTML = code;
+                
+            }
+
+		
+		</script>
+		</div>
+  </body>
+</html>

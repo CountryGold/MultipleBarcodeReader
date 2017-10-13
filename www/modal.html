@@ -1,0 +1,14 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Scanned Barcodes</h1>
+    <a ng-click="closeLocationsModal()" class="button button-icon icon ion-close"></a>
+  </ion-header-bar>
+  <ion-content>
+    <ul class="list">
+      <li class="item" ng-click="clickLocationItem(item.ID)" ng-repeat="item in locations">
+	  {{item.ID}}  <span style="float:right;">{{item.Nome}}</span>
+	  </li>
+	  
+    </ul>
+  </ion-content>
+</div>

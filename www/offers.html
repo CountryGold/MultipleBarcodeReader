@@ -1,0 +1,33 @@
+<div class="modal">
+  <ion-header-bar>
+    <h1 class="title">Manage Offers </h1>
+    <a ng-click="closeLocationsModal2()" class="button button-icon icon ion-close"></a>
+  </ion-header-bar>
+  <ion-content>
+	<div class="list">
+	  <label class="item item-input" style="border-top:0;">
+		<input type="text" placeholder="Barcode" id="add_barcode">
+	  </label>
+	  <label class="item item-input" style="border-bottom:0;">
+		<input type="text" placeholder="Offer" id="add_offer">
+	  </label>
+	 <button class="button button-block button-positive" style="border-radius:0;" ng-click="add_offer()">
+	  <i class="ion ion-plus"></i> Add
+	</button>
+	</div>
+	
+	<div class="card">
+	  <div class="item item-divider">
+		Barcode <span style="float:right;">Offer</span>
+	  </div>
+	  <div class="item item-text-wrap">
+		<ul class="list">
+		  <li class="item" ng-repeat="item in offers">
+		  {{item.code}} <span style="float:right;">{{item.offer}}</span>
+		  </li>
+		</ul>
+	  </div>
+		
+	</div>
+  </ion-content>
+</div>
